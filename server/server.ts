@@ -1,4 +1,6 @@
 import * as Koa from 'koa';
+import * as send from 'koa-send';
+import { resolve } from 'path';
 import { config } from './config';
 import { routes } from './routes';
 
@@ -14,7 +16,12 @@ app.use(async (ctx, next) => {
 })
 app.use(routes);
 
+console.log(resolve('../src/index.html'))
 
+app.use(async (ctx) => {
+  console.log('this is the context', ctx.path)
+  await send(ctx, ctx.path, { root: './src/index.html'});
+})
 
 app.listen(config.port);
 
